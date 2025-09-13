@@ -1,4 +1,5 @@
 import Note from "../models/notes.model.js";
+import Tenant from "../models/tenant.model.js";
 
 export const createNoteController = async (req, res) => {
   const { description } = req.body;
@@ -9,19 +10,44 @@ export const createNoteController = async (req, res) => {
         success: false,
       });
     }
-    const newNote = await Note.create({ description });
+
+    const tenant = await Tenant.findById(req.user.tenantId);
+    console.log("tenant : ", tenant);
+
+    if (!tenant) {
+      return res.status(404).json({
+        message: "Tenant not found!",
+        success: false,
+      });
+    }
+
+    // if Free plan, enforce limit
+    if (tenant.plan === "Free" || tenant.plan === "free") {
+      const noteCount = await Note.countDocuments({
+        tenant: req.user.tenantId,
+      });
+      console.log("Current note count for tenant:", noteCount);
+      if (noteCount >= 3) {
+        return res.status(403).json({
+          message: "Note limit reached. Upgrade to Pro for unlimited notes.",
+          success: false,
+        });
+      }
+    }
+
+    const newNote = await Note.create({
+      description,
+      user: req.user.id,
+      tenant: req.user.tenantId,
+    });
+
     if (!newNote) {
       return res.status(500).json({
         message: "Something went wrong!",
         success: false,
       });
     }
-    // add the user id and tenant id from cookies
-    console.log("user inside of create node: ", req.user);
-    newNote.user = req.user?.id;
-    newNote.tenant = req.user?.tenantId;
-    await newNote.save();
-    console.log("New note: ", newNote);
+
     res.status(201).json({
       message: "New Note created successfully!",
       success: true,
@@ -170,3 +196,4 @@ export const deleteNoteController = async (req, res) => {
     });
   }
 };
+

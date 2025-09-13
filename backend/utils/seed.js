@@ -14,8 +14,8 @@ const seedTenants = async () => {
     await dbConnection();
 
     const tenants = [
-      { slug: "acme", plan: "free" },
-      { slug: "globex", plan: "free" },
+      { slug: "acme", plan: "Free" },
+      { slug: "globex", plan: "Free" },
     ];
 
     await Tenant.insertMany(tenants);
