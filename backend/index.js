@@ -3,6 +3,7 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import { dbConnection } from "./utils/db.js";
 import userRouter from "./routes/user.routes.js";
+import noteRouter from "./routes/notes.routes.js";
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.get("/health", (req, res) => {
 })
 
 app.use("/user", userRouter)
+app.use("/notes", noteRouter)
 
 dbConnection();
 

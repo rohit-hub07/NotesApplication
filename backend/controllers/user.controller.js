@@ -43,7 +43,7 @@ export const registerController = async (req, res) => {
       });
     }
 
-    const token = jwt.sign({ id: newUser._id, tenantId: newUser.tenant}, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: newUser._id, tenantId: newUser.tenant, role: newUser.role}, process.env.JWT_SECRET, {
       expiresIn: "24h",
     });
 
@@ -95,7 +95,7 @@ export const loginController = async (req, res) => {
         success: false,
       });
     }
-    const token = jwt.sign({ id: user._id, tenantId: user.tenant }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: user._id, tenantId: user.tenant,role: user.role }, process.env.JWT_SECRET, {
       expiresIn: "24h",
     });
 

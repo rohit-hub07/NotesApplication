@@ -8,12 +8,16 @@ const noteSchema = new mongoose.Schema(
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: ["User"],
+      ref: "User",
     },
     tenant: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Tenant",
     },
   },
   { timestamps: true }
 );
+
+const Note = mongoose.model("Note", noteSchema);
+
+export default Note;
