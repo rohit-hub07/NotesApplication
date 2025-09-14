@@ -76,14 +76,10 @@ export const getAllNotesController = async (req, res) => {
       });
     }
     // check if the logged in user is a admin or a member
-    let notes;
-    if (req.user.role == "Admin") {
-      notes = await Note.find().populate("tenant");
-    } else {
-      notes = await Note.find({ tenant: tenantId }).populate("tenant");
-    }
+    const notes = await Note.find({ tenant: tenantId }).populate("tenant");
+    
     console.log("All notes: ", notes);
-    if (!notes || notes.length == 0) {
+    if (!notes) {
       return res.status(503).json({
         message: "Tenant not available!",
         success: false,
