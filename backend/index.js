@@ -5,6 +5,7 @@ import { dbConnection } from "./utils/db.js";
 import userRouter from "./routes/user.routes.js";
 import noteRouter from "./routes/notes.routes.js";
 import upgradeRouter from "./routes/upgradePlan.route.js";
+import cors from "cors";
 
 dotenv.config();
 
@@ -13,6 +14,12 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+const corsOptions = {
+  origin: ["http://localhost:8000", "http://localhost:5173"],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 const PORT = process.env.PORT || 8000;
 

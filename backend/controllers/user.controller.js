@@ -43,9 +43,13 @@ export const registerController = async (req, res) => {
       });
     }
 
-    const token = jwt.sign({ id: newUser._id, tenantId: newUser.tenant, role: newUser.role}, process.env.JWT_SECRET, {
-      expiresIn: "24h",
-    });
+    const token = jwt.sign(
+      { id: newUser._id, tenantId: newUser.tenant, role: newUser.role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "24h",
+      }
+    );
 
     const cookieOptions = {
       httpOnly: true,
@@ -95,9 +99,13 @@ export const loginController = async (req, res) => {
         success: false,
       });
     }
-    const token = jwt.sign({ id: user._id, tenantId: user.tenant,role: user.role }, process.env.JWT_SECRET, {
-      expiresIn: "24h",
-    });
+    const token = jwt.sign(
+      { id: user._id, tenantId: user.tenant, role: user.role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "24h",
+      }
+    );
 
     const cookieOptions = {
       httpOnly: true,
@@ -134,6 +142,31 @@ export const logoutController = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       message: "Something went wrong!",
+      success: false,
+    });
+  }
+};
+
+export const checkUserController = async (req, res) => {
+  try {
+    const id = req.user?.id;
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({
+        message: "Please login!",
+        success: false,
+      });
+    }
+
+    res.status(200).json({
+      message: "User fetched successfully",
+      success: true,
+      user: user,
+    });
+  } catch (error) {
+    console.log("Error fetching the user: ", error.message);
+    return res.status(500).json({
+      message: "Error fetching the user!",
       success: false,
     });
   }

@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  checkUserController,
   loginController,
   logoutController,
   registerController,
@@ -10,6 +11,7 @@ const userRouter = express.Router();
 
 userRouter.post("/register", registerController);
 userRouter.post("/login", loginController);
-userRouter.get("/logout",isAuthenticated, logoutController);
+userRouter.get("/logout", isAuthenticated, logoutController);
+userRouter.get("/profile", isAuthenticated, checkUserController);
 
 export default userRouter;
