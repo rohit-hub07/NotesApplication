@@ -48,6 +48,9 @@ export const createNoteController = async (req, res) => {
       });
     }
 
+    // Populate the tenant data for the newly created note
+    await newNote.populate("tenant");
+
     res.status(201).json({
       message: "New Note created successfully!",
       success: true,
@@ -140,6 +143,7 @@ export const updateNoteController = async (req, res) => {
         success: false,
       });
     }
+    console.log("id and description of the note: ", id, description);
     if (!description) {
       return res.status(400).json({
         message: "All fields are required!",
@@ -196,4 +200,3 @@ export const deleteNoteController = async (req, res) => {
     });
   }
 };
-

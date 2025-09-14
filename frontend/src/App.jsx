@@ -7,9 +7,11 @@ import Layout from "./layout/Layout";
 import HomePage from "./page/HomePage";
 import LoginPage from "./page/LoginPage";
 import SignupPage from "./page/SignupPage";
+import NoteDetail from "./page/NoteDetail";
+
 
 function App() {
-  const { authUser, checkAuth, isCheckingUser } = useAuthStore();
+  const { authUser, checkAuth } = useAuthStore();
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
@@ -35,6 +37,9 @@ function App() {
           path="/user/register"
           element={!authUser ? <SignupPage /> : <Navigate to={"/"} />}
         />
+
+        <Route path="notes/:id" element={<NoteDetail />}/>
+
       </Routes>
     </div>
   );

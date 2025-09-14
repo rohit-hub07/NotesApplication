@@ -71,13 +71,15 @@ const SignupPage = () => {
           {/* tenant */}
           <div>
             <label className="block text-gray-700">Tenant</label>
-            <input
-              type="text"
-              placeholder="Enter tenant e.g acme,globex"
+            <select
               {...register("tenant", { required: "tenant is required" })}
               className="w-full px-4 py-2 mt-1 border rounded-lg focus:ring focus:ring-blue-400"
-            />
-            {errors.tenat && (
+            >
+              <option value="">Select a tenant</option>
+              <option value="acme">ACME</option>
+              <option value="globex">Globex</option>
+            </select>
+            {errors.tenant && (
               <p className="text-red-500 text-sm">{errors.tenant.message}</p>
             )}
           </div>
